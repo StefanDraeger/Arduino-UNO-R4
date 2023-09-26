@@ -230,15 +230,20 @@ void UnoR4ScrollText::scrollText(uint8_t text[], uint8_t speed){
   // Ready...
   t_prev = millis();
   // Go!
-  while (true){
-  // Refresh display.
-  led_matrix_buffer_show(scroll,ontime);
+  bool displayText = true;
+  while (displayText){
+	// Refresh display.
+	led_matrix_buffer_show(scroll,ontime);
   
 	// Update scroll position.
 	if (millis()>=t_prev+speed) {
+		Serial.println(scroll);
 		t_prev = millis();
 		scroll += 1; // Scroll to the left.
-		if (scroll>5*strlen((char*)text)) scroll = 0; // restart
+		if (scroll>5*strlen((char*)text)){
+			scroll = 0;
+			displayText = false;
+		}
 	}
   }
 }
